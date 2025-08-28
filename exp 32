@@ -1,0 +1,6 @@
+% pattern_match(Pattern, Target)
+% succeeds if Pattern occurs as a contiguous sublist inside Target
+
+pattern_match(Pattern, Target) :-
+    append(_, Rest, Target),       % split Target into Prefix + Rest
+    append(Pattern, _, Rest).      % Pattern is prefix of Rest
