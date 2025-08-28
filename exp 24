@@ -1,0 +1,15 @@
+% Facts: diet(Disease, RecommendedDiet).
+
+diet(diabetes, 'High-fiber foods, whole grains, leafy vegetables, avoid sugar').
+diet(hypertension, 'Low-salt diet, fruits, vegetables, whole grains, avoid red meat').
+diet(obesity, 'Low-calorie diet, more fruits and vegetables, avoid fried foods').
+diet(anemia, 'Iron-rich foods like spinach, beans, lean meat, vitamin C for absorption').
+diet(heart_disease, 'Low-fat diet, omega-3 rich foods like fish, avoid junk food').
+diet(kidney_disease, 'Low-protein diet, avoid salty and processed foods').
+diet(fever, 'Light meals, fruits, soups, drink more fluids').
+diet(cold, 'Vitamin C rich foods like orange, lemon, and warm fluids').
+diet(cancer, 'High antioxidant diet, green leafy vegetables, avoid processed foods').
+
+% Rule: suggest diet for a disease
+suggest_diet(Disease, Diet) :-
+    diet(Disease, Diet).
