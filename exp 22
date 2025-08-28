@@ -1,0 +1,18 @@
+% Facts: bird(Name, CanFly).
+
+bird(sparrow, yes).
+bird(pigeon, yes).
+bird(parrot, yes).
+bird(crow, yes).
+bird(eagle, yes).
+bird(ostrich, no).
+bird(penguin, no).
+bird(kiwi, no).
+bird(bat, no).   % not a bird, but just to test
+
+% Rule to check if a bird can fly
+can_fly(Bird) :-
+    bird(Bird, yes).
+
+cannot_fly(Bird) :-
+    bird(Bird, no).
