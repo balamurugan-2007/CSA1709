@@ -1,0 +1,39 @@
+% --- Dynamic symptoms database ---
+:- dynamic(symptom/1).
+
+% --- Clear memory before each diagnosis ---
+clear :- retractall(symptom(_)).
+
+% --- Ask about a symptom (only once) ---
+ask(S) :-
+    symptom(S), !.       % already known
+ask(S) :-
+    write('Do you have '), write(S), write('? (yes/no): '),
+    read(Reply),
+    (Reply == yes ->
+        assert(symptom(S))
+     ; true).            % if no, just skip
+
+% --- Disease rules using ask/1 directly ---
+disease(flu) :-
+    ask(fever), ask(cough), ask(headache), ask(bodyache).
+
+disease(cold) :-
+    ask(runny_nose), ask(sneezing), ask(sore_throat).
+
+disease(malaria) :-
+    ask(fever), ask(chills), ask(sweating).
+
+disease(typhoid) :-
+    ask(fever), ask(abdominal_pain), ask(poor_appetite).
+
+disease(covid19) :-
+    ask(fever), ask(cough), ask(loss_of_taste), ask(loss_of_smell).
+
+% --- Diagnosis procedure ---
+diagnose :-
+    clear,
+    (   disease(D) ->
+        write('You may have: '), write(D), nl
+    ;   write('Sorry, unable to diagnose with given answers.'), nl
+    ).
