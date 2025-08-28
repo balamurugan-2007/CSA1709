@@ -1,0 +1,40 @@
+% Facts
+male(ram).
+male(raj).
+male(ravi).
+male(arun).
+male(kumar).
+
+female(sita).
+female(meena).
+female(lakshmi).
+female(anu).
+female(kavya).
+
+parent(ram, raj).
+parent(sita, raj).
+
+parent(ram, meena).
+parent(sita, meena).
+
+parent(raj, arun).
+parent(lakshmi, arun).
+
+parent(raj, anu).
+parent(lakshmi, anu).
+
+parent(ravi, kumar).
+parent(meena, kumar).
+
+% Rules
+father(F, C) :- male(F), parent(F, C).
+mother(M, C) :- female(M), parent(M, C).
+
+grandparent(GP, GC) :- parent(GP, P), parent(P, GC).
+grandfather(GF, GC) :- male(GF), grandparent(GF, GC).
+grandmother(GM, GC) :- female(GM), grandparent(GM, GC).
+
+sibling(X, Y) :- parent(P, X), parent(P, Y), X \= Y.
+
+brother(B, X) :- male(B), sibling(B, X).
+sister(S, X) :- female(S), sibling(S, X).
