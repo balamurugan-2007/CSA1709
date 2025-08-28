@@ -1,0 +1,49 @@
+% --- Dynamic database to hold known facts ---
+:- dynamic fact/1.
+
+% --- Rules: if certain facts are true, infer new facts ---
+rule([fever, cough], flu).
+rule([sneezing, runny_nose], cold).
+rule([fever, chills], malaria).
+rule([fever, abdominal_pain], typhoid).
+rule([loss_of_taste, loss_of_smell], covid19).
+
+% --- Add a fact if not already present ---
+add_fact(F) :- fact(F), !.
+add_fact(F) :- assert(fact(F)).
+
+% --- Apply rules until no more new facts can be derived ---
+forward_chain :-
+    rule(Conditions, NewFact),
+    all_true(Conditions),
+    \+ fact(NewFact),           % new fact not already known
+    assert(fact(NewFact)),
+    write('Derived: '), write(NewFact), nl,
+    forward_chain.
+forward_chain.
+
+% --- Helper: check if all conditions are true ---
+all_true([]).
+all_true([H|T]) :- fact(H), all_true(T).
+
+% --- Start reasoning with initial facts ---
+start_forward :-
+    retractall(fact(_)),    % clear old facts
+    write('Enter known facts (end with stop.):'), nl,
+    read_facts,
+    forward_chain,
+    write('Final derived facts:'), nl,
+    list_facts.
+
+% --- Read facts until "stop." ---
+read_facts :-
+    read(F),
+    ( F == stop -> true
+    ; add_fact(F), read_facts).
+
+% --- List all facts ---
+list_facts :-
+    fact(F),
+    write(F), nl,
+    fail.
+list_facts.
