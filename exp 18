@@ -1,0 +1,12 @@
+% Simple database of people with Name and Date of Birth
+
+% Format: dob(Name, day, month, year).
+dob('Jaya', 12, 5, 2000).
+dob('Bala', 23, 8, 1999).
+dob('Chitra', 1, 1, 2001).
+dob('kavya', 15, 3, 2002).
+dob('Selva', 30, 12, 1998).
+
+% Rule to print full DOB of a person
+find_dob(Name, Day, Month, Year) :-
+    dob(Name, Day, Month, Year).
