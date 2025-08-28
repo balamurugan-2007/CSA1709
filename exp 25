@@ -1,0 +1,43 @@
+% State representation:
+% state(MonkeyPosition, MonkeyHasBanana, BoxPosition, MonkeyOnBox).
+% MonkeyPosition = left | middle | right
+% MonkeyHasBanana = yes | no
+% BoxPosition = left | middle | right
+% MonkeyOnBox = yes | no
+
+% Initial state: monkey at left, no banana, box at middle, monkey not on box
+initial(state(left, no, middle, no)).
+
+% Goal state: monkey has the banana
+goal(state(_, yes, _, _)).
+
+% Actions:
+% 1. Monkey walks
+move(state(left, B, Box, MOnBox), walk_left_to_middle, state(middle, B, Box, MOnBox)).
+move(state(middle, B, Box, MOnBox), walk_middle_to_left, state(left, B, Box, MOnBox)).
+move(state(middle, B, Box, MOnBox), walk_middle_to_right, state(right, B, Box, MOnBox)).
+move(state(right, B, Box, MOnBox), walk_right_to_middle, state(middle, B, Box, MOnBox)).
+
+% 2. Push box (only if monkey & box in same position and monkey not on box)
+move(state(Pos, B, Pos, no), push_box(Pos, NewPos), state(NewPos, B, NewPos, no)) :-
+    (Pos = left, NewPos = middle ;
+     Pos = middle, (NewPos = left ; NewPos = right) ;
+     Pos = right, NewPos = middle).
+
+% 3. Monkey climbs onto the box
+move(state(Pos, B, Pos, no), climb_box, state(Pos, B, Pos, yes)).
+
+% 4. Monkey grasps the banana (only if in middle, on box)
+move(state(middle, no, middle, yes), grasp, state(middle, yes, middle, yes)).
+
+% Planner with visited states
+plan(State, Plan) :-
+    plan(State, [], Plan).
+
+plan(State, _, []) :-
+    goal(State).
+
+plan(State, Visited, [Action|Rest]) :-
+    move(State, Action, NewState),
+    \+ member(NewState, Visited),        % avoid cycles
+    plan(NewState, [NewState|Visited], Rest).
