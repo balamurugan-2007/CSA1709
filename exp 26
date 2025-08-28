@@ -1,0 +1,16 @@
+% Facts: fruit(Name, Color).
+
+fruit(apple, red).
+fruit(banana, yellow).
+fruit(grape, green).
+fruit(grape, purple).   % same fruit, multiple colors
+fruit(orange, orange).
+fruit(mango, yellow).
+fruit(mango, green).
+fruit(strawberry, red).
+fruit(watermelon, green).
+fruit(blueberry, blue).
+
+% Rule to find color of a fruit
+fruit_color(Fruit, Color) :-
+    fruit(Fruit, Color).
