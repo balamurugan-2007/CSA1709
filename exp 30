@@ -1,0 +1,37 @@
+% --- Knowledge base: diseases and their symptoms ---
+has_symptom(flu, fever).
+has_symptom(flu, cough).
+has_symptom(flu, headache).
+has_symptom(flu, bodyache).
+
+has_symptom(cold, sneezing).
+has_symptom(cold, runny_nose).
+has_symptom(cold, sore_throat).
+
+has_symptom(malaria, fever).
+has_symptom(malaria, chills).
+has_symptom(malaria, sweating).
+
+has_symptom(typhoid, fever).
+has_symptom(typhoid, abdominal_pain).
+has_symptom(typhoid, poor_appetite).
+
+has_symptom(covid19, fever).
+has_symptom(covid19, cough).
+has_symptom(covid19, loss_of_taste).
+has_symptom(covid19, loss_of_smell).
+
+% --- Dynamic facts for patient’s symptoms ---
+:- dynamic symptom/1.
+
+% --- Backward chaining: check if a patient has a disease ---
+disease(D) :-
+    has_symptom(D, S),
+    \+ symptom(S),                % if symptom not yet known, ask
+    write('Do you have '), write(S), write('? (yes/no): '),
+    read(Reply),
+    (Reply == yes -> assert(symptom(S)) ; fail),
+    fail.                         % force recheck for remaining symptoms
+
+disease(D) :-
+    forall(has_symptom(D, S), symptom(S)).
