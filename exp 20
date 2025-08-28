@@ -1,0 +1,15 @@
+% Facts: planet(Name, OrderFromSun, Type, Moons, HasRings).
+
+planet(mercury, 1, terrestrial, 0, no).
+planet(venus,   2, terrestrial, 0, no).
+planet(earth,   3, terrestrial, 1, no).
+planet(mars,    4, terrestrial, 2, no).
+planet(jupiter, 5, gas_giant,   79, yes).
+planet(saturn,  6, gas_giant,   82, yes).
+planet(uranus,  7, ice_giant,   27, yes).
+planet(neptune, 8, ice_giant,   14, yes).
+
+% Rule: A planet is habitable if it is terrestrial and has at least 1 moon
+habitable(Planet) :-
+    planet(Planet, _, terrestrial, Moons, _),
+    Moons >= 1.
